@@ -1,32 +1,51 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+  
+      <v-app-bar
+        absolute
+        color="white"
+        elevate-on-scroll
+        scroll-target="#scrolling-techniques-7"
+      >
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+        <v-toolbar-title>イベント管理アプリ</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-checkbox
+          v-model="collapseOnScroll"
+          color="white"
+          hide-details
+        ></v-checkbox>
+      </v-app-bar>
+      <v-sheet
+        id="scrolling-techniques-7"
+        class="overflow-y-auto mt-4"
+        max-height="750"
+      >
+        <v-container style="height: 1000px;">
+          <v-content class="mt-12">
+            <DataTable />
+          </v-content>
+        </v-container>
+      </v-sheet>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import DataTable from './components/DataTable';
+export default {
+  name: "App",
 
-#nav {
-  padding: 30px;
+  components: {
+    DataTable
+  },
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+  data: () => ({
+    //
+    collapseOnScroll: true,
+  })
+  
+};
+</script>

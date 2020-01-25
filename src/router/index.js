@@ -22,7 +22,10 @@ const routes = [
   {
     path: '/event/:id',
     name: 'event_detail',
-    component: EventDetail
+    component: EventDetail,
+    props: route => ({
+      id: Number(route.params.id)
+    })
   }
 ]
 

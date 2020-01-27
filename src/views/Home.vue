@@ -1,33 +1,38 @@
 <template>
-  <v-data-table
-    v-model="selected"
-    show-select
-    :headers="headers"
-    :items="$store.state.events"
-    :items-per-page="10"
-    item-key="event.id"
-    class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-btn outlined class="mt-3" @click="onList">気になるリストへ追加</v-btn>
-    </template>
-    <template v-slot:item.event.starts_at="{ item }">
-      {{ item.event.starts_at | sliceStartsAt }}
-    </template>
-    <template v-slot:item.event.title="{ item }">
-      <router-link
-        :to="{ name: 'event_detail', params: { id: item.event.id } }"
-      >
-        {{ item.event.title | longTitleCut }}
-      </router-link>
-    </template>
-    <template v-slot:item.event.address="{ item }">
-      {{ item.event.address | longAddressCut }}
-    </template>
-    <template v-slot:item.event.participants="{ item }">
-      {{ item.event.participants }}名
-    </template>
-  </v-data-table>
+  <div>
+    <h1>イベント一覧</h1>
+    <v-data-table
+      v-model="selected"
+      show-select
+      :headers="headers"
+      :items="$store.state.events"
+      :items-per-page="10"
+      item-key="event.id"
+      class="elevation-1"
+    >
+      <template v-slot:top>
+        <v-btn outlined class="mt-3" @click="onList"
+          >気になるリストへ追加</v-btn
+        >
+      </template>
+      <template v-slot:item.event.starts_at="{ item }">
+        {{ item.event.starts_at | sliceStartsAt }}
+      </template>
+      <template v-slot:item.event.title="{ item }">
+        <router-link
+          :to="{ name: 'event_detail', params: { id: item.event.id } }"
+        >
+          {{ item.event.title | longTitleCut }}
+        </router-link>
+      </template>
+      <template v-slot:item.event.address="{ item }">
+        {{ item.event.address | longAddressCut }}
+      </template>
+      <template v-slot:item.event.participants="{ item }">
+        {{ item.event.participants }}名
+      </template>
+    </v-data-table>
+  </div>
 </template>
 
 <script>
@@ -45,13 +50,13 @@ export default {
   }),
   methods: {
     onList() {
-      if( !this.selected.length ) return // selectedが空なら保存しない
-      console.log('気になるリストへ追加')
-      this.setList(this.selected) // アクションの呼び出し
-      this.selected = [] // 選択中の配列を空にする
-      console.log(this.$store.state.anxiousList)
+      if (!this.selected.length) return; // selectedが空なら保存しない
+      console.log("気になるリストへ追加");
+      this.setList(this.selected); // アクションの呼び出し
+      this.selected = []; // 選択中の配列を空にする
+      console.log(this.$store.state.anxiousList);
     },
-    ...mapActions(['setList'])
+    ...mapActions(["setList"])
   },
   filters: {
     sliceStartsAt(str) {

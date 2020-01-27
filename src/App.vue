@@ -11,11 +11,11 @@
         <v-toolbar-items>
           <v-btn text :to="{name: 'home'}">Home</v-btn>
           <v-btn text :to="{name: 'about'}">About</v-btn>
-          <v-btn text :to="{name: 'calendar'}">Event Calendar</v-btn>
+          <v-btn text :to="{name: 'anxiosList'}">気になるリスト</v-btn>
         </v-toolbar-items>
       </v-app-bar>
     <v-container fluid fill-height align-start>>
-      <v-content class="mt-12">
+      <v-content>
         <router-view />
       </v-content>
     </v-container>
@@ -39,3 +39,11 @@ export default {
   }
 };
 </script>
+<style>
+h1 {
+  position: relative;
+  padding: 0.5em;
+  background: #a6d3c8;
+  color: white;
+}
+</style>

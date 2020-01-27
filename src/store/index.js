@@ -8,11 +8,7 @@ export default new Vuex.Store({
   state: {
     events: [],
     anxiousList: [],
-    drawer: false,
-    links: [
-      { text: "Home", to: "/" },
-      { text: "About", href: "#about" }
-    ]
+    drawer: false
   },
   mutations: {
     eventsSetMutation(state, data) {
@@ -22,7 +18,11 @@ export default new Vuex.Store({
       state.events = payload;
     },
     setListMutation(state, payload) {
-      state.anxiousList = payload
+      payload.forEach(event =>
+        state.anxiousList.find(e => e.event.id === event.event.id)
+          ? console.log("すでにお気に入りリストにあるため保存されません")
+          : state.anxiousList.push(event)
+      );
     },
     setDrawer: (state, payload) => (state.drawer = payload),
     toggleDrawer: state => (state.drawer = !state.drawer)
@@ -41,16 +41,12 @@ export default new Vuex.Store({
       commit("mutateEventSet", data);
     },
     setList({ commit }, data) {
-      commit("setListMutation", data)
+      commit("setListMutation", data);
     }
-
   },
   getters: {
     getEventById: state => id =>
-      state.events.find(event => event.event.id === id),
-    links: state => {
-      return state.items;
-    }
+      state.events.find(event => event.event.id === id)
   },
   modules: {}
 });

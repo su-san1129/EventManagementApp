@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import EventDetail from '../views/EventDetail.vue'
-import Calendar from '../views/Calendars.vue'
+import AnxiousList from '../views/AnxiousList.vue'
 
 Vue.use(VueRouter)
 
@@ -26,9 +26,9 @@ const routes = [
     component: EventDetail,
   },
   {
-    path: '/calendar',
-    name: 'calendar',
-    component: Calendar
+    path: '/anxious_list',
+    name: 'anxiousList',
+    component: AnxiousList
   }
 ]
 

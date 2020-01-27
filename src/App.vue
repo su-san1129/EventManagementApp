@@ -9,7 +9,7 @@
       <v-toolbar-items>
         <v-btn text :to="{ name: 'home' }">Home</v-btn>
         <v-btn text :to="{ name: 'about' }">About</v-btn>
-        <v-btn text :to="{ name: 'anxiosList' }">気になるリスト</v-btn>
+        <v-btn text :to="{ name: 'anxiousList' }">気になるリスト</v-btn>
       </v-toolbar-items>
     </v-app-bar>
     <v-container fluid fill-height align-start

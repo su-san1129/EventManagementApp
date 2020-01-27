@@ -7,6 +7,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     events: [],
+    anxiousList: [],
+    drawer: false,
     links: [
       { text: "Home", to: "/" },
       { text: "About", href: "#about" }
@@ -18,6 +20,9 @@ export default new Vuex.Store({
     },
     mutateEventSet(state, payload) {
       state.events = payload;
+    },
+    setListMutation(state, payload) {
+      state.anxiousList = payload
     },
     setDrawer: (state, payload) => (state.drawer = payload),
     toggleDrawer: state => (state.drawer = !state.drawer)
@@ -35,13 +40,10 @@ export default new Vuex.Store({
     commitEventSet({ commit }, data) {
       commit("mutateEventSet", data);
     },
-    load({ commit }, id) {
-      let detail = this.state.events.find(event => {
-        event.event.id === id;
-      });
-      console.log("detail:" + detail);
-      commit("set", { detail });
+    setList({ commit }, data) {
+      commit("setListMutation", data)
     }
+
   },
   getters: {
     getEventById: state => id =>

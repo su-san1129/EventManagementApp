@@ -11,7 +11,7 @@
       class="elevation-1"
     >
       <template v-slot:top>
-        <v-btn outlined class="mt-3" @click="onList"
+        <v-btn outlined class="my-3 ml-3" @click="onList"
           >気になるリストへ追加</v-btn
         >
       </template>

@@ -23,10 +23,7 @@ const routes = [
     path: '/event/:id',
     name: 'event_detail',
     component: EventDetail,
-    props: route => ({
-      id: Number(route.params.id)
-    })
-  }
+  } 
 ]
 
 const router = new VueRouter({

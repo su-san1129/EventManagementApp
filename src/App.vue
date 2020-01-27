@@ -7,7 +7,7 @@
       scroll-target="#scrolling-techniques-7"
     >
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <v-toolbar-title>イベント管理アプリ</v-toolbar-title>
+      <v-toolbar-title><router-link :to="{name: 'home'}">イベント管理アプリ</router-link></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-checkbox
         v-model="collapseOnScroll"
@@ -29,6 +29,7 @@
     <router-link :to="{name: 'about'}">リンクだよー</router-link>
   </v-app>
 </template>
+
 
 <script>
 import { mapActions } from "vuex";

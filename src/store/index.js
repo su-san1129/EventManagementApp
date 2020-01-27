@@ -7,7 +7,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     events: [],
-    event: {}
+    links: [
+      { text: "Home", to: "/" },
+      { text: "About", href: "#about" }
+    ]
   },
   mutations: {
     eventsSetMutation(state, data) {
@@ -16,9 +19,8 @@ export default new Vuex.Store({
     mutateEventSet(state, payload) {
       state.events = payload;
     },
-    set(state, { event }) {
-      state.event = event;
-    }
+    setDrawer: (state, payload) => (state.drawer = payload),
+    toggleDrawer: state => (state.drawer = !state.drawer)
   },
   actions: {
     eventsSetAction({ commit }) {
@@ -42,14 +44,10 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getEventById: state => id => {
-      console.log("getEventById");
-      var aaa = state.events.find(event => {
-        console.log(event.event.id)
-        console.log(id)
-        event.event.id === id
-      })
-      console.log(aaa)
+    getEventById: state => id =>
+      state.events.find(event => event.event.id === id),
+    links: state => {
+      return state.items;
     }
   },
   modules: {}

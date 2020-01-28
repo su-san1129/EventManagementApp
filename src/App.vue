@@ -43,4 +43,15 @@ h1 {
   background: #a6d3c8;
   color: white;
 }
+h2 {
+  position: relative;
+  padding: 0.25em 0;
+}
+h2:after {
+  content: "";
+  display: block;
+  height: 4px;
+  background: -webkit-linear-gradient(to right,#a6d3c8, transparent);
+  background: linear-gradient(to right,#a6d3c8, transparent);
+}
 </style>

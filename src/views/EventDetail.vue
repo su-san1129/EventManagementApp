@@ -11,9 +11,9 @@
         <v-card-title>{{ event.title }}</v-card-title>
       </v-img>
       <v-card-text
-        >現在の参加者：{{ event.participants }}名 | あと{{
+        >現在の参加者：{{ event.participants }}名<span v-if="event.ticket_limit > 0"> | あと{{
           event.ticket_limit
-        }}名まで参加可能
+        }}名まで参加可能</span>
       </v-card-text>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
@@ -30,23 +30,24 @@
 
 <script>
 //import { mapGetters } from "vuex";
-import axios from "axios";
+//import axios from "axios";
 export default {
   mounted() {
     console.log("event_detail create");
     if (!this.$store.state.events.length) {
-      axios
-        .get("https://api.doorkeeper.jp/events?prefecture=tokyo")
-        .then(response => {
-            this.event = response.data.find(eve => eve.event.id === parseInt(this.$route.params.id)
-          )
+      //ストアにイベントが登録されていない場合
+      this.$store.watch(
+        state => state.events,
+        newValue => {
+          this.event = newValue.find(
+            eve => eve.event.id === parseInt(this.$route.params.id)
+          );
           this.event = this.event.event;
-          // 通信成功時にコミットする.
-          console.log("RE:event detail ")
-        });
+        }
+      );
     } else {
       this.event = this.$store.getters.getEventById(this.$route.params.id)
-      this.event = this.event.event
+      this.event = this.event.event;
     }
   },
   data() {

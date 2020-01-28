@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar color="teal lighten-3" dark app>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="toggleSideMenu"></v-app-bar-nav-icon>
       <v-toolbar-title :to="{ name: 'home' }"
         >イベント管理アプリ</v-toolbar-title
       >
@@ -12,6 +12,7 @@
         <v-btn text :to="{ name: 'anxiousList' }">気になるリスト</v-btn>
       </v-toolbar-items>
     </v-app-bar>
+    <SideNav />
     <v-container fluid fill-height align-start
       >>
       <v-content>
@@ -23,16 +24,33 @@
 
 <script>
 import { mapActions } from "vuex";
+import firebase from "firebase";
+import SideNav from "@/components/SideNav";
 export default {
   name: "App",
   created() {
     this.eventsSetAction();
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setLoginUser(user);
+      } else {
+        this.deleteLoginUser();
+      }
+    });
   },
-  components: {},
+  components: {
+    SideNav
+  },
 
   data: () => ({}),
   methods: {
-    ...mapActions(["eventsSetAction"])
+    ...mapActions([
+      "toggleSideMenu",
+      "eventsSetAction",
+      "setLoginUser",
+      "logout",
+      "deleteLoginUser"
+    ])
   }
 };
 </script>
@@ -51,7 +69,7 @@ h2:after {
   content: "";
   display: block;
   height: 4px;
-  background: -webkit-linear-gradient(to right,#a6d3c8, transparent);
-  background: linear-gradient(to right,#a6d3c8, transparent);
+  background: -webkit-linear-gradient(to right, #a6d3c8, transparent);
+  background: linear-gradient(to right, #a6d3c8, transparent);
 }
 </style>

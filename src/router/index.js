@@ -29,6 +29,11 @@ const routes = [
     path: '/anxious_list',
     name: 'anxiousList',
     component: AnxiousList
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/Login.vue')
   }
 ]
 

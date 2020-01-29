@@ -26,10 +26,10 @@ export default new Vuex.Store({
               .firestore()
               .collection(`users/${this.getters.uid}/anxious_event`)
               .add(event)
-            .then(doc => {
-              event.id = doc.id
-              state.anxiousList.push(event)
-            })
+              .then(doc => {
+                event.id = doc.id;
+                state.anxiousList.push(event);
+              })
       );
     },
     setAnxiousListMutation(state, payload) {
@@ -51,8 +51,10 @@ export default new Vuex.Store({
       state.items = items;
     },
     deleteAnxiousEventMutation(state, anxiousEventId) {
-      const index = state.anxiousList.findIndex(e => e.event === anxiousEventId)
-      state.anxiousList.splice(index, 1)
+      const index = state.anxiousList.findIndex(
+        e => e.event === anxiousEventId
+      );
+      state.anxiousList.splice(index, 1);
     },
     setDrawer: (state, payload) => (state.drawer = payload),
     toggleDrawer: state => (state.drawer = !state.drawer)
@@ -74,9 +76,9 @@ export default new Vuex.Store({
         .get()
         .then(snapshot =>
           snapshot.forEach(doc => {
-            const data = doc.data()
-            data.id = doc.id
-            commit("setAnxiousListMutation", data)
+            const data = doc.data();
+            data.id = doc.id;
+            commit("setAnxiousListMutation", data);
           })
         );
     },
@@ -107,9 +109,14 @@ export default new Vuex.Store({
     },
     deleteAnxiousEvent({ commit, getters }, anxiousEventId) {
       if (getters.uid) {
-        firebase.firestore().collection(`users/${getters.uid}/anxious_event`).doc(anxiousEventId).delete().then(() => {
-          commit('deleteAnxiousEventMutation', anxiousEventId)
-        })
+        firebase
+          .firestore()
+          .collection(`users/${getters.uid}/anxious_event`)
+          .doc(anxiousEventId)
+          .delete()
+          .then(() => {
+            commit("deleteAnxiousEventMutation", anxiousEventId);
+          });
       }
     }
   },
@@ -119,7 +126,9 @@ export default new Vuex.Store({
       state.events.find(event => event.event.id === id),
     uid: state => (state.login_user ? state.login_user.uid : null),
     userName: state => (state.login_user ? state.login_user.displayName : ""),
-    photoURL: state => (state.login_user ? state.login_user.photoURL : "")
+    photoURL: state => (state.login_user ? state.login_user.photoURL : ""),
+    getAnxiousList: state => state.anxiousList,
+    getEvents: state => state.events
   },
   modules: {}
 });

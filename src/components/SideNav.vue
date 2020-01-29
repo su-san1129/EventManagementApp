@@ -37,10 +37,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import itemApi from "@/data/Items.js";
 export default {
   created() {
-    this.items = itemApi.getItems();
+    this.items = this.getItems
   },
   data() {
     return {
@@ -48,14 +47,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["userName", "photoURL"])
+    ...mapGetters(["userName", "photoURL", "getItems"])
   },
   watch: {
-    // userNameを監視。空でなければログインリンクを表示しない
+    // userNameを監視。
     userName: function() {
       if (this.userName === "") {
         //console.log("null");
-        this.items = itemApi.getItems();
+        this.items = this.getItems
       } else {
         //console.log("item splice");
         this.items = this.items.filter(item => item.id !== 3);

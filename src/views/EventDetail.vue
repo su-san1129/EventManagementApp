@@ -32,7 +32,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 export default {
-  mounted() {
+  created() {
     this.events = this.storeEvents
     this.event = this.findEventById(this.events);
   },

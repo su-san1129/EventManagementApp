@@ -5,11 +5,17 @@ import firebase from "firebase";
 
 Vue.use(Vuex);
 
+const apiUrl = "https://api.doorkeeper.jp/events?prefecture=tokyo";
+const items = [
+  { id: 1, title: "Home", icon: "mdi-home", link: { name: "home" } },
+  { id: 2, title: "About", icon: "mdi-menu", link: { name: "about" } },
+  { id: 3, title: "Login", icon: "mdi-login", link: { name: "login" } },
+];
+
 export default new Vuex.Store({
   state: {
-    items: [],
+    items: items,
     login_user: null,
-    event: [],
     events: [], // APIから取得したイベント一覧
     anxiousList: [], //お気に入りリスト
     drawer: false // サイドバー
@@ -44,12 +50,6 @@ export default new Vuex.Store({
     deleteLoginUser(state) {
       state.login_user = null;
     },
-    setEventDetalMutation(state, getters, id) {
-      state.event = getters.getEventById(id);
-    },
-    setItemMutation(state, items) {
-      state.items = items;
-    },
     deleteAnxiousEventMutation(state, anxiousEventId) {
       const index = state.anxiousList.findIndex(
         e => e.event === anxiousEventId
@@ -63,7 +63,7 @@ export default new Vuex.Store({
     eventsSetAction({ commit }) {
       // APIを取得
       axios
-        .get("https://api.doorkeeper.jp/events?prefecture=tokyo")
+        .get(apiUrl)
         .then(response => {
           // 通信成功時にコミットする.
           commit("eventsSetMutation", response.data);
@@ -87,9 +87,6 @@ export default new Vuex.Store({
     },
     setList({ commit }, data) {
       commit("setListMutation", data);
-    },
-    setEventDetal({ commit }, id) {
-      commit("setEventDetailMutation", id);
     },
     setLoginUser({ commit }, user) {
       commit("setLoginUser", user);
@@ -122,13 +119,11 @@ export default new Vuex.Store({
   },
   getters: {
     // イベントobjの一件検索
-    getEventById: state => id =>
-      state.events.find(event => event.event.id === id),
     uid: state => (state.login_user ? state.login_user.uid : null),
     userName: state => (state.login_user ? state.login_user.displayName : ""),
     photoURL: state => (state.login_user ? state.login_user.photoURL : ""),
     getAnxiousList: state => state.anxiousList,
-    getEvents: state => state.events
+    getItems: state => state.items
   },
   modules: {}
 });

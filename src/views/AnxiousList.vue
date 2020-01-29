@@ -67,7 +67,7 @@ export default {
     }
   },
   methods: {
-     deleteConfirm (id) {
+    deleteConfirm (id) {
       if (confirm('削除してよろしいですか？')) {
         this.deleteAnxiousEvent(id)
       }

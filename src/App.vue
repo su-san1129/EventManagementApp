@@ -12,12 +12,13 @@
         <v-btn text v-if="$store.state.login_user" :to="{ name: 'anxiousList' }"
           >気になるリスト</v-btn
         >
-        <v-btn text v-if="$store.state.login_user" @click="logout">Logout</v-btn>
+        <v-btn text v-if="$store.state.login_user" @click="logout"
+          >Logout</v-btn
+        >
       </v-toolbar-items>
     </v-app-bar>
     <SideNav />
-    <v-container fluid fill-height align-start
-      >>
+    <v-container fluid fill-height align-start>
       <v-content>
         <router-view />
       </v-content>
@@ -67,7 +68,7 @@ export default {
         group: position,
         type: type
       });
-      this.logout
+      this.logout;
     }
   }
 };

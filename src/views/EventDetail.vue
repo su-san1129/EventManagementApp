@@ -11,9 +11,8 @@
         <v-card-title>{{ event.title }}</v-card-title>
       </v-img>
       <v-card-text
-        >現在の参加者：{{ event.participants }}名<span v-if="event.ticket_limit > 0"> | あと{{
-          event.ticket_limit
-        }}名まで参加可能</span>
+        >現在の参加者：{{ event.participants }}名
+        <span v-if="event.ticket_limit > 0"> | あと{{ event.ticket_limit }}名まで参加可能</span>
       </v-card-text>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>

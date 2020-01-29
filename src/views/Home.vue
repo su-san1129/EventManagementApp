@@ -54,7 +54,6 @@ export default {
       if (!this.selected.length) return; // selectedが空なら保存しない
       console.log("気になるリストへ追加");
       this.setList(this.selected); // アクションの呼び出し
-      console.log(this.selected.length)
       for (let i = 0; i < this.selected.length; i++) {
         this.$notify({
           group: "foo",

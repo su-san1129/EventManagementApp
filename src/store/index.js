@@ -1,12 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import firebase from "firebase";                                          
+import firebase from "firebase";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    items: [],
     login_user: null,
     event: [],
     events: [], // APIから取得したイベント一覧
@@ -18,23 +19,42 @@ export default new Vuex.Store({
       state.events = data;
     },
     setListMutation(state, payload) {
+      console.log("pay" + payload);
       payload.forEach(event =>
         state.anxiousList.find(e => e.event.id === event.event.id)
           ? console.log("すでにお気に入りリストにあるため保存されません")
-          : state.anxiousList.push(event)
+          : firebase
+              .firestore()
+              .collection(`users/${this.getters.uid}/anxious_event`)
+              .add(event)
+            .then(doc => {
+              event.id = doc.id
+              console.log(event)
+              state.anxiousList.push(event)
+            })
       );
     },
+    setAnxiousListMutation(state, payload) {
+      state.anxiousList.push(payload);
+    },
     toggleSideMenu(state) {
-      state.drawer = !state.drawer
+      state.drawer = !state.drawer;
     },
     setLoginUser(state, user) {
-      state.login_user = user
+      state.login_user = user;
     },
     deleteLoginUser(state) {
-      state.login_user = null
+      state.login_user = null;
     },
     setEventDetalMutation(state, getters, id) {
-      state.event = getters.getEventById(id)
+      state.event = getters.getEventById(id);
+    },
+    setItemMutation(state, items) {
+      state.items = items;
+    },
+    deleteAnxiousEventMutation(state, anxiousEventId) {
+      const index = state.anxiousList.findIndex(e => e.event === anxiousEventId)
+      state.anxiousList.splice(index, 1)
     },
     setDrawer: (state, payload) => (state.drawer = payload),
     toggleDrawer: state => (state.drawer = !state.drawer)
@@ -50,36 +70,62 @@ export default new Vuex.Store({
           commit("eventsSetMutation", response.data);
         });
     },
+    setAnxiousList({ commit }) {
+      console.log("uid:"+this.getters.uid)
+      firebase
+        .firestore()
+        .collection(`users/${this.getters.uid}/anxious_event`)
+        .get()
+        .then(snapshot =>
+          snapshot.forEach(doc => {
+            const data = doc.data()
+            data.id = doc.id
+            commit("setAnxiousListMutation", data)
+          })
+        );
+    },
     toggleSideMenu({ commit }) {
-      commit('toggleSideMenu')
+      commit("toggleSideMenu");
     },
     setList({ commit }, data) {
       commit("setListMutation", data);
     },
     setEventDetal({ commit }, id) {
-      console.log('setEvent Detail!')
-      commit("setEventDetailMutation", id)
+      console.log("setEvent Detail!");
+      commit("setEventDetailMutation", id);
     },
     setLoginUser({ commit }, user) {
-      commit('setLoginUser', user)
+      commit("setLoginUser", user);
     },
     deleteLoginUser({ commit }) {
-      commit('deleteLoginUser')
+      commit("deleteLoginUser");
     },
     login() {
-      const google_auth_provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithRedirect(google_auth_provider)
+      const google_auth_provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithRedirect(google_auth_provider);
     },
     logout() {
-      firebase.auth().signOut()
+      firebase.auth().signOut();
+    },
+    setItemAction({ commit }, items) {
+      console.log(items);
+      commit("setItemMutation", items);
+    },
+    deleteAnxiousEvent({ commit, getters }, anxiousEventId) {
+      if (getters.uid) {
+        firebase.firestore().collection(`users/${getters.uid}/anxious_event`).doc(anxiousEventId).delete().then(() => {
+          commit('deleteAnxiousEventMutation', anxiousEventId)
+        })
+      }
     }
   },
   getters: {
     // イベントobjの一件検索
     getEventById: state => id =>
       state.events.find(event => event.event.id === id),
-    userName: state => state.login_user ? state.login_user.displayName : '',
-    photoURL: state => state.login_user ? state.login_user.photoURL : ''
+    uid: state => (state.login_user ? state.login_user.uid : null),
+    userName: state => (state.login_user ? state.login_user.displayName : ""),
+    photoURL: state => (state.login_user ? state.login_user.photoURL : "")
   },
   modules: {}
 });

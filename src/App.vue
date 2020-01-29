@@ -9,7 +9,10 @@
       <v-toolbar-items>
         <v-btn text :to="{ name: 'home' }">Home</v-btn>
         <v-btn text :to="{ name: 'about' }">About</v-btn>
-        <v-btn text :to="{ name: 'anxiousList' }">気になるリスト</v-btn>
+        <v-btn text v-if="$store.state.login_user" :to="{ name: 'anxiousList' }"
+          >気になるリスト</v-btn
+        >
+        <v-btn text v-if="$store.state.login_user" @click="logout">Logout</v-btn>
       </v-toolbar-items>
     </v-app-bar>
     <SideNav />
@@ -33,8 +36,12 @@ export default {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.setLoginUser(user);
+        this.setAnxiousList();
+        if (this.$router.currentRoute.name === "login")
+          this.$router.push({ name: "home" });
       } else {
         this.deleteLoginUser();
+        this.$router.push({ name: "home" });
       }
     });
   },
@@ -49,8 +56,19 @@ export default {
       "eventsSetAction",
       "setLoginUser",
       "logout",
-      "deleteLoginUser"
-    ])
+      "deleteLoginUser",
+      "setAnxiousList"
+    ]),
+    userLogout(position, type) {
+      this.$notify({
+        title: "メッセージです。",
+        text: "click to " + position,
+        duration: 100,
+        group: position,
+        type: type
+      });
+      this.logout
+    }
   }
 };
 </script>

@@ -3,7 +3,7 @@
     <v-list>
       <v-list-item>
         <v-list-item-avatar>
-          <img v-if="photoURL" :src="photoURL">
+          <img v-if="photoURL" :src="photoURL" />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>{{ userName }}</v-list-item-title>
@@ -20,24 +20,50 @@
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item
+        v-if="$store.state.login_user"
+        @click="logout"
+      >
+        <v-list-item-icon>
+          <v-icon>mdi-logout</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>ログアウト</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from "vuex";
+import itemApi from "@/data/Items.js";
 export default {
-  data () {
+  created() {
+    this.items = itemApi.getItems();
+  },
+  data() {
     return {
-      items: [
-        { title: 'Home', icon: 'mdi-home', link: { name: 'home'} },
-        { title: 'About', icon: 'mdi-menu', link: { name: 'about' } },
-        { title: 'Login', icon: 'mdi-home', link: { name: 'login'} }
-      ]
-    }
+      items: []
+    };
   },
   computed: {
-    ...mapGetters(['userName', 'photoURL'])
-  }
-}
+    ...mapGetters(["userName", "photoURL"])
+  },
+  watch: {
+    // userNameを監視。空でなければログインリンクを表示しない
+    userName: function() {
+      if (this.userName === "") {
+        console.log("null");
+        this.items = itemApi.getItems();
+      } else {
+        console.log("item splice");
+        this.items = this.items.filter(item => item.id !== 3);
+      }
+    }
+  },
+  methods: {
+    ...mapActions(["logout"])
+    }
+};
 </script>

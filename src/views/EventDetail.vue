@@ -28,8 +28,6 @@
 </template>
 
 <script>
-//import { mapGetters } from "vuex";
-//import axios from "axios";
 export default {
   mounted() {
     console.log("event_detail create");

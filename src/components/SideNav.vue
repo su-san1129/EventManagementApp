@@ -54,10 +54,10 @@ export default {
     // userNameを監視。空でなければログインリンクを表示しない
     userName: function() {
       if (this.userName === "") {
-        console.log("null");
+        //console.log("null");
         this.items = itemApi.getItems();
       } else {
-        console.log("item splice");
+        //console.log("item splice");
         this.items = this.items.filter(item => item.id !== 3);
       }
     }

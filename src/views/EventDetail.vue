@@ -30,7 +30,6 @@
 <script>
 export default {
   mounted() {
-    console.log("event_detail create");
     if (!this.$store.state.events.length) {
       //ストアにイベントが登録されていない場合
       this.$store.watch(

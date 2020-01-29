@@ -19,17 +19,15 @@ export default new Vuex.Store({
       state.events = data;
     },
     setListMutation(state, payload) {
-      console.log("pay" + payload);
       payload.forEach(event =>
         state.anxiousList.find(e => e.event.id === event.event.id)
-          ? console.log("すでにお気に入りリストにあるため保存されません")
+          ? console.log()
           : firebase
               .firestore()
               .collection(`users/${this.getters.uid}/anxious_event`)
               .add(event)
             .then(doc => {
               event.id = doc.id
-              console.log(event)
               state.anxiousList.push(event)
             })
       );
@@ -65,13 +63,11 @@ export default new Vuex.Store({
       axios
         .get("https://api.doorkeeper.jp/events?prefecture=tokyo")
         .then(response => {
-          console.log("eventsSetAction");
           // 通信成功時にコミットする.
           commit("eventsSetMutation", response.data);
         });
     },
     setAnxiousList({ commit }) {
-      console.log("uid:"+this.getters.uid)
       firebase
         .firestore()
         .collection(`users/${this.getters.uid}/anxious_event`)
@@ -91,7 +87,6 @@ export default new Vuex.Store({
       commit("setListMutation", data);
     },
     setEventDetal({ commit }, id) {
-      console.log("setEvent Detail!");
       commit("setEventDetailMutation", id);
     },
     setLoginUser({ commit }, user) {
@@ -108,7 +103,6 @@ export default new Vuex.Store({
       firebase.auth().signOut();
     },
     setItemAction({ commit }, items) {
-      console.log(items);
       commit("setItemMutation", items);
     },
     deleteAnxiousEvent({ commit, getters }, anxiousEventId) {

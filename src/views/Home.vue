@@ -52,7 +52,6 @@ export default {
   methods: {
     onList() {
       if (!this.selected.length) return; // selectedが空なら保存しない
-      console.log("気になるリストへ追加");
       this.setList(this.selected); // アクションの呼び出し
       for (let i = 0; i < this.selected.length; i++) {
         this.$notify({

@@ -2,19 +2,13 @@
   <v-app>
     <v-app-bar color="teal lighten-3" dark app>
       <v-app-bar-nav-icon @click.stop="toggleSideMenu"></v-app-bar-nav-icon>
-      <v-toolbar-title :to="{ name: 'home' }"
-        >イベント管理アプリ</v-toolbar-title
-      >
+      <v-toolbar-title :to="{ name: 'home' }">イベント管理アプリ</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn text :to="{ name: 'home' }">Home</v-btn>
         <v-btn text :to="{ name: 'about' }">About</v-btn>
-        <v-btn text v-if="$store.state.login_user" :to="{ name: 'anxiousList' }"
-          >気になるリスト</v-btn
-        >
-        <v-btn text v-if="$store.state.login_user" @click="logout"
-          >Logout</v-btn
-        >
+        <v-btn text v-if="$store.state.login_user" :to="{ name: 'anxiousList' }">気になるリスト</v-btn>
+        <v-btn text v-if="$store.state.login_user" @click="logout">Logout</v-btn>
       </v-toolbar-items>
     </v-app-bar>
     <SideNav />

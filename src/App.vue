@@ -2,21 +2,29 @@
   <v-app>
     <v-app-bar color="teal lighten-3" dark app>
       <v-app-bar-nav-icon @click.stop="toggleSideMenu"></v-app-bar-nav-icon>
-      <v-toolbar-title :to="{ name: 'home' }">イベント管理アプリ</v-toolbar-title>
+      <v-toolbar-title :to="{ name: 'home' }"
+        >イベント管理アプリ</v-toolbar-title
+      >
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn text :to="{ name: 'home' }">Home</v-btn>
         <v-btn text :to="{ name: 'about' }">About</v-btn>
-        <v-btn text v-if="$store.state.login_user" :to="{ name: 'anxiousList' }">気になるリスト</v-btn>
-        <v-btn text v-if="$store.state.login_user" @click="logout">Logout</v-btn>
+        <v-btn text v-if="$store.state.login_user" :to="{ name: 'anxiousList' }"
+          >気になるリスト</v-btn
+        >
+        <v-btn text v-if="$store.state.login_user" @click="userLogout"
+          >Logout</v-btn
+        >
       </v-toolbar-items>
     </v-app-bar>
     <SideNav />
     <v-container fluid fill-height align-start>
       <v-content>
+        <LoadingOverlay />
         <router-view />
       </v-content>
     </v-container>
+    <notifications group="foo" position="bottom right" />
   </v-app>
 </template>
 
@@ -24,6 +32,7 @@
 import { mapActions } from "vuex";
 import firebase from "firebase";
 import SideNav from "@/components/SideNav";
+import LoadingOverlay from "@/components/LoadingOverlay";
 export default {
   name: "App",
   created() {
@@ -32,15 +41,13 @@ export default {
       if (user) {
         this.setLoginUser(user);
         this.setAnxiousList();
-        if (this.$router.currentRoute.name === "login")
-          this.$router.push({ name: "home" });
       } else {
         this.deleteLoginUser();
-        this.$router.push({ name: "home" });
       }
     });
   },
   components: {
+    LoadingOverlay,
     SideNav
   },
 
@@ -54,15 +61,13 @@ export default {
       "deleteLoginUser",
       "setAnxiousList"
     ]),
-    userLogout(position, type) {
+    userLogout() {
+      this.logout();
       this.$notify({
-        title: "メッセージです。",
-        text: "click to " + position,
-        duration: 100,
-        group: position,
-        type: type
+        group: "foo",
+        title: "ログアウトしました",
+        type: "warn",
       });
-      this.logout;
     }
   }
 };

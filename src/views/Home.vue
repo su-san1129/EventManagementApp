@@ -9,6 +9,7 @@
       :items-per-page="10"
       item-key="event.id"
       class="elevation-1"
+      v-if="$store.state.login_user"
     >
       <template v-slot:top>
         <v-btn outlined class="my-3 ml-3" @click="onList"
@@ -32,7 +33,37 @@
         {{ item.event.participants }}名
       </template>
     </v-data-table>
-    <notifications group="foo" position="bottom right"/>
+
+    <v-data-table
+      :headers="headers"
+      :items="$store.state.events"
+      :items-per-page="10"
+      item-key="event.id"
+      class="elevation-1"
+      v-if="!$store.state.login_user"
+    >
+      <template v-slot:top>
+        <v-btn outlined class="my-3 ml-3" @click="onList"
+          >気になるリストへ追加</v-btn
+        >
+      </template>
+      <template v-slot:item.event.starts_at="{ item }">
+        {{ item.event.starts_at | sliceStartsAt }}
+      </template>
+      <template v-slot:item.event.title="{ item }">
+        <router-link
+          :to="{ name: 'event_detail', params: { id: item.event.id } }"
+        >
+          {{ item.event.title | longTitleCut }}
+        </router-link>
+      </template>
+      <template v-slot:item.event.address="{ item }">
+        {{ item.event.address | longAddressCut }}
+      </template>
+      <template v-slot:item.event.participants="{ item }">
+        {{ item.event.participants }}名
+      </template>
+    </v-data-table>
   </div>
 </template>
 

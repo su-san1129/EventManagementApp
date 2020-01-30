@@ -13,8 +13,7 @@
       <v-card-text
         >現在の参加者：{{ event.event.participants }}名
         <span v-if="event.event.ticket_limit > 0">
-          | あと{{ event.event.ticket_limit }}名まで参加可能</span
-        >
+          | あと{{ event.event.ticket_limit }}名まで参加可能</span>
       </v-card-text>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
@@ -34,7 +33,7 @@ import { mapGetters, mapState } from "vuex";
 export default {
   created() {
     this.events = this.storeEvents
-    this.event = this.findEventById(this.events);
+    this.event = this.findEventById(this.events)
   },
   computed: {
     ...mapGetters(["getAnxiousList"]),

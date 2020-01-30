@@ -22,7 +22,7 @@
       </v-list-item>
       <v-list-item
         v-if="$store.state.login_user"
-        @click="logout"
+        @click="userLogout"
       >
         <v-list-item-icon>
           <v-icon>mdi-logout</v-icon>
@@ -62,7 +62,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["logout"])
+    ...mapActions(["logout"]),
+    userLogout() {
+      this.logout();
+      this.$notify({
+        group: "foo",
+        title: "ログアウトしました",
+        type: "warn",
+      });
+    }
     }
 };
 </script>

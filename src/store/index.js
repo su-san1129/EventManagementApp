@@ -9,11 +9,12 @@ const apiUrl = "https://api.doorkeeper.jp/events?prefecture=tokyo";
 const items = [
   { id: 1, title: "Home", icon: "mdi-home", link: { name: "home" } },
   { id: 2, title: "About", icon: "mdi-menu", link: { name: "about" } },
-  { id: 3, title: "Login", icon: "mdi-login", link: { name: "login" } },
+  { id: 3, title: "Login", icon: "mdi-login", link: { name: "login" } }
 ];
 
 export default new Vuex.Store({
   state: {
+    loading: false,
     items: items,
     login_user: null,
     events: [], // APIから取得したイベント一覧
@@ -21,6 +22,12 @@ export default new Vuex.Store({
     drawer: false // サイドバー
   },
   mutations: {
+    start(state) {
+      state.loading = true;
+    },
+    end(state) {
+      state.loading = false;
+    },
     eventsSetMutation(state, data) {
       state.events = data;
     },
@@ -62,12 +69,10 @@ export default new Vuex.Store({
   actions: {
     eventsSetAction({ commit }) {
       // APIを取得
-      axios
-        .get(apiUrl)
-        .then(response => {
-          // 通信成功時にコミットする.
-          commit("eventsSetMutation", response.data);
-        });
+      axios.get(apiUrl).then(response => {
+        // 通信成功時にコミットする.
+        commit("eventsSetMutation", response.data);
+      });
     },
     setAnxiousList({ commit }) {
       firebase
@@ -97,6 +102,7 @@ export default new Vuex.Store({
     login() {
       const google_auth_provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithRedirect(google_auth_provider);
+      console.log("yahooo")
     },
     logout() {
       firebase.auth().signOut();

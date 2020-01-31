@@ -33,16 +33,14 @@ export default new Vuex.Store({
     },
     setListMutation(state, payload) {
       payload.forEach(event =>
-        state.anxiousList.find(e => e.event.id === event.event.id)
-          ? console.log()
-          : firebase
-              .firestore()
-              .collection(`users/${this.getters.uid}/anxious_event`)
-              .add(event)
-              .then(doc => {
-                event.id = doc.id;
-                state.anxiousList.push(event);
-              })
+        firebase
+          .firestore()
+          .collection(`users/${this.getters.uid}/anxious_event`)
+          .add(event)
+          .then(doc => {
+            event.id = doc.id;
+            state.anxiousList.push(event);
+          })
       );
     },
     setAnxiousListMutation(state, payload) {
@@ -59,8 +57,9 @@ export default new Vuex.Store({
     },
     deleteAnxiousEventMutation(state, anxiousEventId) {
       const index = state.anxiousList.findIndex(
-        e => e.event === anxiousEventId
+        e => e.event.id === anxiousEventId
       );
+      console.log(index)
       state.anxiousList.splice(index, 1);
     },
     setDrawer: (state, payload) => (state.drawer = payload),
@@ -102,7 +101,7 @@ export default new Vuex.Store({
     login() {
       const google_auth_provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithRedirect(google_auth_provider);
-      console.log("yahooo")
+      console.log("yahooo");
     },
     logout() {
       firebase.auth().signOut();
@@ -110,15 +109,15 @@ export default new Vuex.Store({
     setItemAction({ commit }, items) {
       commit("setItemMutation", items);
     },
-    deleteAnxiousEvent({ commit, getters }, anxiousEventId) {
+    deleteAnxiousEvent({ commit, getters }, anxiousEvent) {
       if (getters.uid) {
         firebase
           .firestore()
           .collection(`users/${getters.uid}/anxious_event`)
-          .doc(anxiousEventId)
+          .doc(anxiousEvent.docId)
           .delete()
           .then(() => {
-            commit("deleteAnxiousEventMutation", anxiousEventId);
+            commit("deleteAnxiousEventMutation", anxiousEvent.id);
           });
       }
     }

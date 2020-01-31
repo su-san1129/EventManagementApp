@@ -20,10 +20,7 @@
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item
-        v-if="$store.state.login_user"
-        @click="userLogout"
-      >
+      <v-list-item v-if="$store.state.login_user" @click="userLogout">
         <v-list-item-icon>
           <v-icon>mdi-logout</v-icon>
         </v-list-item-icon>
@@ -39,7 +36,7 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   created() {
-    this.items = this.getItems
+    this.items = this.getItems;
   },
   data() {
     return {
@@ -54,7 +51,7 @@ export default {
     userName: function() {
       if (this.userName === "") {
         //console.log("null");
-        this.items = this.getItems
+        this.items = this.getItems;
       } else {
         //console.log("item splice");
         this.items = this.items.filter(item => item.id !== 3);
@@ -68,9 +65,9 @@ export default {
       this.$notify({
         group: "foo",
         title: "ログアウトしました",
-        type: "warn",
+        type: "warn"
       });
     }
-    }
+  }
 };
 </script>

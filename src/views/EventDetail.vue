@@ -10,8 +10,8 @@
       >
         <v-card-title>{{ event.event.title }}</v-card-title>
       </v-img>
-      <v-card-text
-        >現在の参加者：{{ event.event.participants }}名
+      <v-card-text>
+        現在の参加者：{{ event.event.participants }}名
         <span v-if="event.event.ticket_limit > 0">
           | あと{{ event.event.ticket_limit }}名まで参加可能</span>
       </v-card-text>
@@ -34,6 +34,9 @@ export default {
   created() {
     this.events = this.storeEvents
     this.event = this.findEventById(this.events)
+    if(this.event == null){
+      this.event = this.findEventById(this.getAnxiousList)
+    }
   },
   computed: {
     ...mapGetters(["getAnxiousList"]),

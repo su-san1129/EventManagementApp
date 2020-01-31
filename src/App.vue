@@ -7,13 +7,13 @@
       >
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn text :to="{ name: 'home' }">Home</v-btn>
-        <v-btn text :to="{ name: 'about' }">About</v-btn>
+        <v-btn text :to="{ name: 'home' }">ホーム</v-btn>
+        <v-btn text :to="{ name: 'about' }">このサイトについて</v-btn>
         <v-btn text v-if="$store.state.login_user" :to="{ name: 'anxiousList' }"
           >気になるリスト</v-btn
         >
         <v-btn text v-if="$store.state.login_user" @click="userLogout"
-          >Logout</v-btn
+          >ログアウト</v-btn
         >
       </v-toolbar-items>
     </v-app-bar>

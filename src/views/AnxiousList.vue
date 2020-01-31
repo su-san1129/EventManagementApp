@@ -10,12 +10,15 @@
       <template v-slot:item.event.starts_at="{ item }">
         {{ item.event.starts_at | sliceStartsAt }}
       </template>
-      <template v-slot:item.event.title="{ item }">
-        <router-link
-          :to="{ name: 'event_detail', params: { id: item.event.id } }"
-        >
-          {{ item.event.title | longTitleCut }}
-        </router-link>
+       <template v-slot:item.event.title="{ item }">
+        <v-list-item>
+          <v-btn
+            text
+            :to="{ name: 'event_detail', params: { id: item.event.id } }"
+          >
+            {{ item.event.title | longTitleCut }}
+          </v-btn>
+        </v-list-item>
       </template>
       <template v-slot:item.event.address="{ item }">
         {{ item.event.address | longAddressCut }}
@@ -24,7 +27,7 @@
         {{ item.event.participants }}名
       </template>
       <template v-slot:item.action="{ item }">
-        <v-icon small class="mr-2" @click="deleteConfirm(item.id)">mdi-delete</v-icon
+        <v-icon small class="mr-2" @click="deleteConfirm (item)">mdi-delete</v-icon
         >
       </template>
     </v-data-table>
@@ -67,9 +70,10 @@ export default {
     }
   },
   methods: {
-    deleteConfirm (id) {
+    deleteConfirm (item) {
       if (confirm('削除してよろしいですか？')) {
-        this.deleteAnxiousEvent(id)
+        let deleteObj = {docId: item.id, id: item.event.id}
+        this.deleteAnxiousEvent(deleteObj)
       }
     },
     ...mapActions(['deleteAnxiousEvent'])

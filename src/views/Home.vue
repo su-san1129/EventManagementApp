@@ -20,11 +20,14 @@
         {{ item.event.starts_at | sliceStartsAt }}
       </template>
       <template v-slot:item.event.title="{ item }">
-        <router-link
-          :to="{ name: 'event_detail', params: { id: item.event.id } }"
-        >
-          {{ item.event.title | longTitleCut }}
-        </router-link>
+        <v-list-item>
+          <v-btn
+            text
+            :to="{ name: 'event_detail', params: { id: item.event.id } }"
+          >
+            {{ item.event.title | longTitleCut }}
+          </v-btn>
+        </v-list-item>
       </template>
       <template v-slot:item.event.address="{ item }">
         {{ item.event.address | longAddressCut }}
@@ -42,20 +45,18 @@
       class="elevation-1"
       v-if="!$store.state.login_user"
     >
-      <template v-slot:top>
-        <v-btn outlined class="my-3 ml-3" @click="onList"
-          >気になるリストへ追加</v-btn
-        >
-      </template>
       <template v-slot:item.event.starts_at="{ item }">
         {{ item.event.starts_at | sliceStartsAt }}
       </template>
       <template v-slot:item.event.title="{ item }">
-        <router-link
-          :to="{ name: 'event_detail', params: { id: item.event.id } }"
-        >
-          {{ item.event.title | longTitleCut }}
-        </router-link>
+        <v-list-item>
+          <v-btn
+            text
+            :to="{ name: 'event_detail', params: { id: item.event.id } }"
+          >
+            {{ item.event.title | longTitleCut }}
+          </v-btn>
+        </v-list-item>
       </template>
       <template v-slot:item.event.address="{ item }">
         {{ item.event.address | longAddressCut }}
@@ -68,7 +69,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "home",
   data: () => ({
@@ -78,22 +79,51 @@ export default {
       { text: "住所", value: "event.address" },
       { text: "参加人数", value: "event.participants" }
     ],
-    selected: []
+    selected: [],
+    toAnxious: []
   }),
   methods: {
     onList() {
-      if (!this.selected.length) return; // selectedが空なら保存しない
-      this.setList(this.selected); // アクションの呼び出し
-      for (let i = 0; i < this.selected.length; i++) {
-        this.$notify({
-          group: "foo",
-          title: "ID:" + this.selected[i].event.id ,
-          text: "気になるリストへ追加しました！"
-        });
-      }
+      if (!this.selected.length) {
+        alert("チェックを入れてください");
+        return;
+      } // selectedが空なら保存しない
+      this.isCheckEvent();
+      this.setList(this.toAnxious); // アクションの呼び出し
       this.selected = []; // 選択中の配列を空にする
+      this.toAnxious = [];
+    },
+    getNotify(title, text, type) {
+      this.$notify({
+        group: "foo",
+        title: "ID:" + title,
+        text: text,
+        type: type
+      });
+    },
+    isCheckEvent() {
+      this.selected.forEach(selectEvent => {
+        let a = this.anxiousList.find(e => e.event.id === selectEvent.event.id);
+        if (a != null) {
+          this.getNotify(
+            "すでにお気に入りに登録されています。",
+            selectEvent.event.id,
+            "error"
+          );
+        } else {
+          this.getNotify(
+            "気になるリストへ追加しました！",
+            selectEvent.event.id,
+            "primary"
+          );
+          this.toAnxious.push(selectEvent);
+        }
+      });
     },
     ...mapActions(["setList"])
+  },
+  computed: {
+    ...mapState(["anxiousList"])
   },
   filters: {
     sliceStartsAt(str) {

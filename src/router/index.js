@@ -30,7 +30,8 @@ const routes = [
   {
     path: "/anxious_list",
     name: "anxiousList",
-    component: AnxiousList
+    component: AnxiousList,
+    meta: { requiresAuth: true}
   },
   {
     path: "/login",
@@ -46,6 +47,7 @@ const router = new VueRouter({
   routes
 });
 
+
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   if (requiresAuth) {
@@ -58,13 +60,24 @@ router.beforeEach((to, from, next) => {
       if (user) {
         //ログインされている場合は、ホーム画面を表示
         store.commit("end");
-        next({
-          path: "/"
-        });
+        if (location.href.indexOf('anxious') != -1 || to.path.indexOf('anxious') != -1) {
+          next()
+        } else {
+          next({
+            path: "/"
+          });
+        }
       } else {
         //ログインしていなければそのまま、表示
         store.commit("end")
-        next();
+        if (location.href.indexOf('anxious') != -1) {
+          next({
+            path: '/'
+          })
+        } else {
+          next();
+        }
+      
       }
     });
   } else {

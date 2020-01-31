@@ -1,13 +1,13 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import vuetify from './plugins/vuetify';
-import Notifications from 'vue-notification'
-import firebase from 'firebase'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import vuetify from "./plugins/vuetify";
+import Notifications from "vue-notification";
+import firebase from "firebase";
 
-Vue.config.productionTip = false
-Vue.use(Notifications)
+Vue.config.productionTip = false;
+Vue.use(Notifications);
 
 var firebaseConfig = {
   apiKey: "AIzaSyA2SVuH0mR5nIVux3Kqp-4m81gQvizelqg",
@@ -23,10 +23,9 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-
 new Vue({
   router,
   store,
   vuetify,
   render: h => h(App)
-}).$mount('#app')
+}).$mount("#app");
